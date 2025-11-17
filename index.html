@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marks Calculator</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="center-container">
+      <div class="card shadow">
+        <div class="card-header">Marks Input Form</div>
+        <div class="card-body">
+          <form>
+            <!-- Course Name -->
+            <div class="mb-3">
+              <label for="courseName" class="form-label">Nama Kursus</label>
+              <input
+                type="text"
+                class="form-control"
+                id="courseName"
+                placeholder="Enter course name"
+              />
+            </div>
+
+            <!-- CA Marks -->
+            <div class="mb-3">
+              <label class="form-label">Penilaian Berterusan (PB)</label>
+              <input
+                type="number"
+                id="caMarks"
+                class="form-control mb-2"
+                placeholder="Your CA Marks"
+              />
+            </div>
+
+            <!-- FE Marks -->
+            <div class="mb-3">
+              <label class="form-label">Peperiksaan Akhir (PA)</label>
+              <input
+                type="number"
+                id="feMarks"
+                class="form-control mb-2"
+                placeholder="Your FE Marks"
+              />
+            </div>
+
+            <div id="errorBox" style="color: red; margin-top: 8px;"></div>
+            <hr />
+
+            <!-- Marks Needed -->
+            <div class="mb-3">
+              <label class="form-label">Penilian Markah Berterusan</label>
+              <div id="marksNeededContainer" class="row g-2">
+                <!-- Mandatory first row -->
+                <div class="row g-2 align-items-center mb-2 assessment-row">
+                  <div class="col-6">
+                    <input
+                      type="number"
+                      class="form-control markah-diperolehi"
+                      placeholder="Markah diperolehi"
+                    />
+                  </div>
+                  <div class="col-6 d-flex">
+                    <input
+                      type="number"
+                      class="form-control me-2 markah-penuh "
+                      placeholder="Markah Penuh"
+                    />
+                    <!-- No remove button for first row -->
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                id="addMarksNeeded"
+                class="btn btn-success btn-sm mt-2"
+              >
+                Add More
+              </button>
+            </div>
+
+            <!-- button submit -->
+            <button
+              id="submitBtn"
+              type="button"
+              class="btn btn-primary w-100 mt-3"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">Your Results</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h5 id="modalCourse"></h5>
+            <p>
+              <strong>Penilaian Berterusan :</strong>
+              <span id="modalMarks"></span>
+            </p>
+            <p>
+              <strong>Total PB :</strong> <span id="modalPercentage"></span>
+            </p>
+
+            <hr />
+
+            <h5>Grades Needed</h5>
+            <div class="table-responsive">
+              <table
+                class="table table-striped table-hover text-center align-middle"
+              >
+                <thead class="table-dark">
+                  <tr>
+                    <th>Grade</th>
+                    <th>Markah untuk lulus</th>
+                    <th>Dalam(%)</th>
+                  </tr>
+                </thead>
+                <tbody id="gradeTableBody">
+                  <!-- Dynamic content will be injected here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer
+      style="
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: transparent;
+"
+    >
+      © 2025 raufsemi —
+      <a
+        href="https://raufsemi.wordpress.com"
+        target="_blank"
+        style="color: inherit; text-decoration: none;"
+      >
+        www.raufsemi.com
+      </a>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
