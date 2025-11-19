@@ -1,45 +1,61 @@
-import { calculateScaledCA } from "./caCalculator.js";
+import { calculatePB } from "./caCalculator.js";
 import { addRow, setupRemoveListener } from "./rowManager.js";
-
 import { populateGradeTable } from "./gradeTable.js";
 
-const submitBtn = document.getElementById("submitBtn");
-const container = document.getElementById("marksNeededContainer");
-const addBtn = document.getElementById("addMarksNeeded");
-const errorBox = document.getElementById("errorBox");
+const dom = {
+  submitBtn: document.getElementById("submitBtn"),
+  container: document.getElementById("marksNeededContainer"),
+  addBtn: document.getElementById("addMarksNeeded"),
+  errorBox: document.getElementById("errorBox"),
+  pbInput: document.getElementById("pbMarks"),
+  paInput: document.getElementById("paMarks"),
+  modalPercentage: document.getElementById("modalPercentage"),
+  resultModal: document.getElementById("resultModal"),
+};
 
-// setup row add/remove
-addBtn.addEventListener("click", () => addRow(container));
-setupRemoveListener(container);
+function initPopovers(selector = '[data-bs-toggle="popover"]') {
+  const popoverTriggerList = document.querySelectorAll(selector);
+  popoverTriggerList.forEach((el) => new bootstrap.Popover(el));
+}
 
-// handle submit
-submitBtn.addEventListener("click", () => {
-  const ca = parseFloat(document.getElementById("caMarks").value) || 0;
-  const fe = parseFloat(document.getElementById("feMarks").value) || 0;
-  errorBox.textContent = "";
+function setupAddRow() {
+  dom.addBtn.addEventListener("click", () => addRow(dom.container));
+}
 
-  if (ca + fe !== 100) {
-    errorBox.textContent = "CA + FE must equal 100.";
-    return;
-  }
+function setupSubmitButton() {
+  dom.submitBtn.addEventListener("click", () => {
+    const pb = parseFloat(dom.pbInput.value) || 0;
+    const fa = parseFloat(dom.paInput.value) || 0;
 
-  const rows = container.querySelectorAll(".assessment-row");
-  if (rows.length === 0) {
-    errorBox.textContent = "Add at least one assessment row.";
-    return;
-  }
+    dom.errorBox.textContent = "";
 
-  const totalCAObtained = calculateScaledCA(rows, ca);
-  const percentage = `${totalCAObtained.toFixed(2)}`;
-  populateGradeTable(totalCAObtained, fe);
+    if (pb + fa !== 100) {
+      dom.errorBox.textContent = "Pastikan jumlah PB + PA = 100";
+      return;
+    }
 
-  document.getElementById("modalMarks").textContent = `${ca}`;
-  document.getElementById(
-    "modalPercentage"
-  ).textContent = `${percentage}/${ca}`;
-  const courseName = document.getElementById("courseName").value.trim();
-  document.getElementById("modalCourse").textContent = courseName || "Course";
+    const rows = dom.container.querySelectorAll(".pb-row");
+    if (rows.length === 0) {
+      dom.errorBox.textContent = "Add at least one assessment row.";
+      return;
+    }
 
-  const modal = new bootstrap.Modal(document.getElementById("resultModal"));
-  modal.show();
-});
+    const totalPB = calculatePB(rows, pb);
+    const percentage = totalPB.toFixed(2);
+
+    populateGradeTable(totalPB, fa);
+
+    dom.modalPercentage.textContent = `${percentage}/${pb}`;
+    const modal = new bootstrap.Modal(dom.resultModal);
+    modal.show();
+  });
+}
+
+function initApp() {
+  setupAddRow();
+  setupRemoveListener(dom.container);
+  initPopovers();
+  setupSubmitButton();
+}
+
+document.addEventListener("DOMContentLoaded", initApp);
