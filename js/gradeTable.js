@@ -8,41 +8,75 @@ export const gradeBoundaries = [
   { min: 60, max: 64, grade: "B-" },
 ];
 
-export function populateGradeTable(totalPB, fe) {
+export function populateGradeTable(totalPB, pa) {
   const gradeTableBody = document.getElementById("gradeTableBody");
+
   gradeTableBody.innerHTML = "";
 
-  // Filter grades B- and above
-  const filteredGrades = gradeBoundaries.filter((g) => g.min >= 60);
+  // Make sure the values are valid numbers
+  if (!Number.isFinite(totalPB) || !Number.isFinite(pa) || pa <= 0) {
+    console.error("Invalid grade table values:", {
+      totalPB,
+      pa,
+    });
 
-  filteredGrades.forEach((g) => {
-    const feNeededMin = g.min - totalPB;
-    const feNeededMax = g.max - totalPB;
+    return;
+  }
 
-    // Skip impossible grades
-    if (feNeededMin > fe) return;
+  gradeBoundaries.forEach((grade) => {
+    const paNeeded = grade.min - totalPB;
 
-    const tr = document.createElement("tr");
+    // Skip grades that cannot be achieved with the available PA marks
+    if (paNeeded > pa) {
+      return;
+    }
 
-    // Grade badge
-    const gradeTd = document.createElement("td");
-    gradeTd.innerHTML = `<span class="badge ${
-      g.grade === "A+"
-        ? "bg-success"
-        : g.grade.startsWith("A")
-        ? "bg-warning text-dark"
-        : "bg-info text-dark"
-    }">${g.grade}</span>`;
+    // If PB already satisfies the grade, PA needed is 0
+    const marksNeeded = Math.max(0, paNeeded);
 
-    const marksMin = Math.max(0, Number(feNeededMin.toFixed(2)));
+    // Convert required PA marks into percentage of PA
+    const percentage = ((marksNeeded / pa) * 100).toFixed(1);
 
-    const percMin = Math.max(0, (marksMin / fe) * 100).toFixed(1);
-    const percentageTd = document.createElement("td");
-    percentageTd.textContent = `${percMin}%`;
+    const row = document.createElement("tr");
 
-    tr.appendChild(gradeTd);
-    tr.appendChild(percentageTd);
+    // Grade
+    const gradeCell = document.createElement("td");
+    gradeCell.className = "px-4 py-3";
 
-    gradeTableBody.appendChild(tr);
+    const badge = document.createElement("span");
+
+    const badgeClass =
+      grade.grade === "A+"
+        ? "bg-green-100 text-green-700"
+        : grade.grade.startsWith("A")
+          ? "bg-yellow-100 text-yellow-700"
+          : "bg-blue-100 text-blue-700";
+
+    badge.className = `
+      inline-flex
+      items-center
+      rounded-md
+      px-2.5
+      py-1
+      text-xs
+      font-semibold
+      ${badgeClass}
+    `;
+
+    badge.textContent = grade.grade;
+
+    gradeCell.appendChild(badge);
+
+    // Required percentage
+    const requiredCell = document.createElement("td");
+
+    requiredCell.className = "px-4 py-3 font-medium text-gray-700";
+
+    requiredCell.textContent = `${percentage}%`;
+
+    row.appendChild(gradeCell);
+    row.appendChild(requiredCell);
+
+    gradeTableBody.appendChild(row);
   });
 }

@@ -1,150 +1,440 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ms">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PB PA KALKULATOR</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+
+    <title>PB PA Kalkulator Politeknik | Kira Markah & Gred</title>
+
+    <meta
+      name="description"
+      content="PB PA Kalkulator Politeknik untuk mengira markah Penilaian Berterusan (PB), Peperiksaan Akhir (PA), serta markah minimum yang diperlukan untuk mencapai gred A+, A, A-, B+ dan B-."
     />
-    <link rel="stylesheet" href="style.css" />
+
+    <meta
+      name="keywords"
+      content="kalkulator PB PA, kalkulator politeknik, kalkulator markah politeknik, kalkulator gred politeknik, PBPA calculator, kalkulator peperiksaan akhir, kira markah PB, kira markah PA, kalkulator kolej komuniti"
+    />
+
+    <meta name="author" content="raufsemi" />
+
+    <meta property="og:title" content="PB PA Kalkulator Politeknik" />
+
+    <meta
+      property="og:description"
+      content="Kira markah PB, PA dan semak markah minimum yang diperlukan untuk mencapai gred anda."
+    />
+
+    <meta property="og:type" content="website" />
+
+    <meta property="og:url" content="https://example.com/" />
+
+    <link rel="canonical" href="https://example.com/" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="./global.css" />
   </head>
 
-  <body>
-    <div class="center-container">
-      <div class="card shadow">
-        <div class="card-header">PBPA Kalkulator</div>
-        <div class="card-body">
-          <form>
-            <div class="mb-3">
-              <label class="form-label">Penilaian Berterusan (PB)</label>
-              <input
-                type="number"
-                id="pbMarks"
-                class="form-control mb-2"
-                placeholder="Masukkan jumlah PB"
-              />
+  <body
+    class="min-h-screen bg-[var(--background)] text-[var(--foreground)] antialiased"
+  >
+    <!-- Background -->
+    <div
+      class="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      aria-hidden="true"
+    >
+      <div
+        class="absolute left-1/2 top-[-18rem] h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-[var(--accent)]/10 blur-3xl"
+      ></div>
+
+      <div
+        class="absolute bottom-[-18rem] right-[-12rem] h-[32rem] w-[32rem] rounded-full bg-[var(--surface-tertiary)]/60 blur-3xl"
+      ></div>
+    </div>
+
+    <!-- Header -->
+    <header class="px-4 pb-4 pt-10 sm:px-6 sm:pt-16">
+      <div class="mx-auto max-w-2xl text-center">
+        <div
+          class="mb-5 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--muted)] shadow-sm"
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-[var(--success)]"></span>
+
+          Politeknik · Kolej Komuniti
+        </div>
+
+        <h1
+          class="text-3xl font-bold tracking-tight text-[var(--foreground)] sm:text-5xl"
+        >
+          PB PA Kalkulator
+        </h1>
+
+        <p
+          class="mx-auto mt-4 max-w-xl text-sm leading-6 text-[var(--muted)] sm:text-base"
+        >
+          Kira markah Penilaian Berterusan (PB), Peperiksaan Akhir (PA) dan
+          semak gred yang boleh dicapai dengan mudah.
+        </p>
+      </div>
+    </header>
+
+    <!-- Calculator -->
+    <main class="px-4 pb-12 pt-6 sm:px-6 sm:pt-10">
+      <div class="mx-auto max-w-xl">
+        <section
+          aria-labelledby="calculator-title"
+          class="overflow-hidden rounded-[var(--radius)] border border-[var(--border)] bg-[var(--surface)] shadow-2xl shadow-black/5"
+        >
+          <!-- Card Header -->
+          <div class="border-b border-[var(--separator)] px-6 py-6 sm:px-8">
+            <div class="flex items-start gap-4">
+              <div
+                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--field-radius)] bg-[var(--accent)] text-lg font-bold text-[var(--accent-foreground)] shadow-sm"
+              >
+                %
+              </div>
+
+              <div>
+                <h2
+                  id="calculator-title"
+                  class="text-lg font-semibold tracking-tight text-[var(--surface-foreground)]"
+                >
+                  Kira Markah Anda
+                </h2>
+
+                <p class="mt-1 text-sm leading-5 text-[var(--muted)]">
+                  Masukkan pecahan PB dan PA untuk memulakan pengiraan.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="px-6 py-6 sm:px-8 sm:py-8">
+            <form id="calculatorForm">
+              <div class="space-y-6">
+                <!-- PB / PA -->
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <!-- PB -->
+                  <div>
+                    <label
+                      for="pbMarks"
+                      class="mb-2 block text-sm font-semibold text-[var(--foreground)]"
+                    >
+                      Penilaian Berterusan
+                      <span class="font-normal text-[var(--muted)]">
+                        (PB)
+                      </span>
+                    </label>
+
+                    <div class="relative">
+                      <input
+                        type="number"
+                        id="pbMarks"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        inputmode="decimal"
+                        placeholder="Contoh: 60"
+                        class="block w-full rounded-[var(--field-radius)] border border-[var(--border)] bg-[var(--field-background)] px-4 py-3 pr-12 text-sm font-medium text-[var(--field-foreground)] outline-none transition placeholder:text-[var(--field-placeholder)] hover:border-[var(--separator)] focus:border-[var(--focus)] focus:ring-4 focus:ring-[var(--focus)]/10"
+                      />
+
+                      <span
+                        class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-medium text-[var(--muted)]"
+                      >
+                        %
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- PA -->
+                  <div>
+                    <label
+                      for="paMarks"
+                      class="mb-2 block text-sm font-semibold text-[var(--foreground)]"
+                    >
+                      Peperiksaan Akhir
+                      <span class="font-normal text-[var(--muted)]">
+                        (PA)
+                      </span>
+                    </label>
+
+                    <div class="relative">
+                      <input
+                        type="number"
+                        id="paMarks"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        inputmode="decimal"
+                        placeholder="Contoh: 40"
+                        class="block w-full rounded-[var(--field-radius)] border border-[var(--border)] bg-[var(--field-background)] px-4 py-3 pr-12 text-sm font-medium text-[var(--field-foreground)] outline-none transition placeholder:text-[var(--field-placeholder)] hover:border-[var(--separator)] focus:border-[var(--focus)] focus:ring-4 focus:ring-[var(--focus)]/10"
+                      />
+
+                      <span
+                        class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-medium text-[var(--muted)]"
+                      >
+                        %
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Error -->
+                <div
+                  id="errorBox"
+                  role="alert"
+                  aria-live="polite"
+                  class="min-h-5 text-sm font-medium text-[var(--danger)]"
+                ></div>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-4">
+                  <div class="h-px flex-1 bg-[var(--separator)]"></div>
+
+                  <span
+                    class="text-[11px] font-semibold uppercase tracking-wider text-[var(--muted)]"
+                  >
+                    Markah PB
+                  </span>
+
+                  <div class="h-px flex-1 bg-[var(--separator)]"></div>
+                </div>
+
+                <!-- Assessment -->
+                <div>
+                  <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-[var(--foreground)]">
+                      Penilaian Markah Berterusan
+                    </h3>
+
+                    <p class="mt-1 text-xs leading-5 text-[var(--muted)]">
+                      Masukkan markah diperolehi dan markah penuh bagi setiap
+                      penilaian.
+                    </p>
+                  </div>
+
+                  <div id="marksNeededContainer" class="space-y-3">
+                    <div class="pb-row grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="sr-only"> Markah diperolehi </label>
+
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          inputmode="decimal"
+                          class="markah-diperolehi block w-full rounded-[var(--field-radius)] border border-[var(--border)] bg-[var(--field-background)] px-4 py-3 text-sm text-[var(--field-foreground)] outline-none transition placeholder:text-[var(--field-placeholder)] hover:border-[var(--separator)] focus:border-[var(--focus)] focus:ring-4 focus:ring-[var(--focus)]/10"
+                          placeholder="Markah diperolehi"
+                        />
+                      </div>
+
+                      <div>
+                        <label class="sr-only"> Markah penuh </label>
+
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          inputmode="decimal"
+                          class="markah-penuh block w-full rounded-[var(--field-radius)] border border-[var(--border)] bg-[var(--field-background)] px-4 py-3 text-sm text-[var(--field-foreground)] outline-none transition placeholder:text-[var(--field-placeholder)] hover:border-[var(--separator)] focus:border-[var(--focus)] focus:ring-4 focus:ring-[var(--focus)]/10"
+                          placeholder="Markah penuh"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Add -->
+                  <button
+                    type="button"
+                    id="addMarksNeeded"
+                    class="mt-4 inline-flex items-center gap-2 rounded-[var(--field-radius)] border border-[var(--border)] bg-[var(--default)] px-4 py-2.5 text-sm font-semibold text-[var(--default-foreground)] shadow-sm transition hover:bg-[var(--surface-secondary)] focus:outline-none focus:ring-4 focus:ring-[var(--focus)]/10 active:scale-[0.98]"
+                  >
+                    <span class="text-base leading-none">+</span>
+                    Tambah Penilaian
+                  </button>
+                </div>
+
+                <!-- Submit -->
+                <button
+                  id="submitBtn"
+                  type="button"
+                  class="group flex w-full items-center justify-center gap-2 rounded-[var(--field-radius)] bg-[var(--accent)] px-5 py-3.5 text-sm font-semibold text-[var(--accent-foreground)] shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:brightness-95 focus:outline-none focus:ring-4 focus:ring-[var(--focus)]/15 active:translate-y-0"
+                >
+                  <span>Kira Markah</span>
+
+                  <span class="transition-transform group-hover:translate-x-1">
+                    →
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Supporting Text -->
+        <div class="mt-6 text-center">
+          <p class="text-xs leading-5 text-[var(--muted)]">
+            Kalkulator ini membantu menganggarkan markah PA yang diperlukan
+            berdasarkan markah PB anda.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Result Modal -->
+    <div
+      id="resultModal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-[var(--overlay-foreground)]/50 p-4 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="resultModalTitle"
+    >
+      <div
+        class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-[var(--border)] bg-[var(--overlay)] shadow-2xl"
+      >
+        <!-- Modal Header -->
+        <div class="border-b border-[var(--separator)] px-6 py-6 sm:px-7">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <div
+                class="mb-2 inline-flex rounded-full bg-[var(--success)]/10 px-2.5 py-1 text-[11px] font-semibold text-[var(--success-foreground)]"
+              >
+                Pengiraan selesai
+              </div>
+
+              <h2
+                id="resultModalTitle"
+                class="text-xl font-bold tracking-tight text-[var(--overlay-foreground)]"
+              >
+                Keputusan Anda
+              </h2>
+
+              <p class="mt-1 text-sm text-[var(--muted)]">
+                Ringkasan markah dan sasaran PA anda.
+              </p>
             </div>
 
+            <button
+              type="button"
+              id="closeResultModal"
+              class="rounded-[var(--field-radius)] p-2 text-[var(--muted)] transition hover:bg-[var(--default)] hover:text-[var(--foreground)] focus:outline-none focus:ring-4 focus:ring-[var(--focus)]/10"
+              aria-label="Tutup keputusan"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="space-y-6 px-6 py-6 sm:px-7">
+          <h3
+            id="modalCourse"
+            class="hidden text-sm font-semibold text-[var(--foreground)]"
+          ></h3>
+
+          <!-- PB Result -->
+          <div
+            class="rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)] p-5"
+          >
+            <div class="flex items-end justify-between gap-4">
+              <div>
+                <p class="text-xs font-medium text-[var(--muted)]">
+                  Jumlah PB yang diperolehi
+                </p>
+
+                <p
+                  id="modalPercentage"
+                  class="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]"
+                ></p>
+              </div>
+
+              <div
+                class="rounded-[var(--field-radius)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--muted)] shadow-sm"
+              >
+                PB
+              </div>
+            </div>
+          </div>
+
+          <!-- Grade Table -->
+          <div>
             <div class="mb-3">
-              <label class="form-label">Peperiksaan Akhir (PA)</label>
-              <input
-                type="number"
-                id="paMarks"
-                class="form-control mb-2"
-                placeholder="Masukkan jumlah PA"
-              />
+              <h3 class="text-sm font-semibold text-[var(--foreground)]">
+                Markah PA yang diperlukan
+              </h3>
+
+              <p class="mt-1 text-xs text-[var(--muted)]">
+                Minimum markah PA untuk mencapai setiap gred.
+              </p>
             </div>
 
             <div
-              id="errorBox"
-              style="color: red; margin-top: 8px; font-weight: 600;"
-            ></div>
-            <hr />
-
-            <div class="mb-3">
-              <label class="form-label">PENILAIAN MARKAH BERTERUSAN</label>
-              <div id="marksNeededContainer" class="row g-2">
-                <div class="row g-2 align-items-center mb-2 pb-row">
-                  <div class="col-6">
-                    <input
-                      type="number"
-                      class="form-control markah-diperolehi"
-                      placeholder="Markah yang diperolehi"
-                    />
-                  </div>
-                  <div class="col-6 d-flex">
-                    <input
-                      type="number"
-                      class="form-control me-2 markah-penuh"
-                      placeholder="Markah Penuh"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                id="addMarksNeeded"
-                class="btn btn-success btn-sm mt-2"
-              >
-                Tambah
-              </button>
-            </div>
-
-            <button
-              id="submitBtn"
-              type="button"
-              class="btn btn-primary w-100 mt-3"
+              class="overflow-hidden rounded-2xl border border-[var(--border)]"
             >
-              Submit
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+              <table class="w-full text-center text-sm">
+                <thead class="bg-[var(--surface-secondary)]">
+                  <tr class="border-b border-[var(--separator)]">
+                    <th
+                      scope="col"
+                      class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[var(--muted)]"
+                    >
+                      Gred
+                    </th>
 
-    <div class="modal fade" id="resultModal" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title">Your Results</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-
-          <div class="modal-body">
-            <h5 id="modalCourse"></h5>
-
-            <p>
-              <strong style="font-size: 18px;"
-                >Jumlah PB yang diperolehi :</strong
-              >
-              <span id="modalPercentage"></span>
-            </p>
-
-            <hr />
-
-            <h5>Markah PA yang diperlukan (minimum)</h5>
-
-            <div class="table-responsive">
-              <table
-                class="table table-striped table-hover text-center align-middle"
-              >
-                <thead class="table-dark">
-                  <tr>
-                    <th>Gred</th>
-                    <th>Diperlukan</th>
+                    <th
+                      scope="col"
+                      class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[var(--muted)]"
+                    >
+                      Diperlukan
+                    </th>
                   </tr>
                 </thead>
-                <tbody id="gradeTableBody"></tbody>
+
+                <tbody
+                  id="gradeTableBody"
+                  class="divide-y divide-[var(--separator)]"
+                ></tbody>
               </table>
             </div>
           </div>
+        </div>
 
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
-              Close
-            </button>
-          </div>
+        <!-- Modal Footer -->
+        <div class="border-t border-[var(--separator)] px-6 py-4 sm:px-7">
+          <button
+            type="button"
+            id="closeResultModalFooter"
+            class="w-full rounded-[var(--field-radius)] bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-[var(--accent-foreground)] transition hover:brightness-95 focus:outline-none focus:ring-4 focus:ring-[var(--focus)]/15"
+          >
+            Tutup
+          </button>
         </div>
       </div>
     </div>
 
-    <footer>
-      © 2025 raufsemi —
-      <a
-        href="https://raufsemi.wordpress.com/2025/11/19/calculator-pb/"
-        target="_blank"
-        >Cara Nak Guna?</a
-      >
+    <!-- Footer -->
+    <footer class="px-4 pb-8 text-center">
+      <p class="text-xs text-[var(--muted)]">
+        © <span id="currentYear"></span> raufsemi ·
+
+        <a
+          href="https://raufsemi.wordpress.com/2025/11/19/calculator-pb/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-medium text-[var(--foreground)] underline decoration-[var(--border)] underline-offset-4 transition hover:text-[var(--accent)]"
+        >
+          Cara Nak Guna?
+        </a>
+      </p>
+
+      <p class="mt-2 text-[11px] text-[var(--muted)]">
+        PB PA Calculator · Politeknik | Kolej Komuniti
+      </p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./js/main.js"></script>
   </body>
 </html>
